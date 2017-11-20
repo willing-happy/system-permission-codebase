@@ -4,6 +4,7 @@ public class SystemPermission {
     private SystemProfile profile;
     private SystemAdmin admin;
     private boolean granted;
+    private boolean isUnixPermissionGranted;
     private String state;
     public final static String REQUESTED = "REQUESTED";
     public final static String CLAIMED = "CLAIMED";
@@ -57,7 +58,7 @@ public class SystemPermission {
             return;
 
         if (profile.isUnixPermissionRequired() && state.equals(UNIX_CLAIMED))
-            ;
+            isUnixPermissionGranted = true;
         else if (profile.isUnixPermissionRequired() && !profile.isUnixPermissionGranted()) {
             state = UNIX_REQUESTED;
             notifyUnixAdminsOfPermissionRequest();
