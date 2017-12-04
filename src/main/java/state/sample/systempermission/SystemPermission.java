@@ -66,11 +66,15 @@ public class SystemPermission {
         this.granted = granted;
     }
 
-    public SystemProfile getProfile() {
-        return profile;
-    }
-
     public void setUnixPermissionGranted(boolean unixPermissionGranted) {
         isUnixPermissionGranted = unixPermissionGranted;
+    }
+
+    public boolean isUnixPermissionRequired() {
+        return this.profile.isUnixPermissionRequired();
+    }
+
+    public boolean isUnixPermissionGranted() {
+        return this.profile.isUnixPermissionGranted();
     }
 }

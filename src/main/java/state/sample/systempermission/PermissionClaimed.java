@@ -8,10 +8,6 @@ public class PermissionClaimed extends PermissionState {
         super("CLAIMED");
     }
 
-    public void claimedBy(SystemAdmin admin, SystemPermission permission) {
-        return;
-    }
-
     public void deniedBy(SystemAdmin admin,SystemPermission permission) {
         if (!permission.getAdmin().equals(admin))
             return;
@@ -22,7 +18,7 @@ public class PermissionClaimed extends PermissionState {
     public void grantedBy(SystemAdmin admin, SystemPermission permission) {
         if (!permission.getAdmin().equals(admin))
             return;
-        if (permission.getProfile().isUnixPermissionRequired() && !permission.getProfile().isUnixPermissionGranted()) {
+        if (permission.isUnixPermissionRequired() && !permission.isUnixPermissionGranted()) {
             permission.setState(PermissionState.UNIX_REQUESTED);
             permission.notifyUnixAdminsOfPermissionRequest();
             return;

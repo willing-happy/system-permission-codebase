@@ -7,8 +7,4 @@ public class PermissionGranted extends PermissionState {
     public PermissionGranted() {
         super("GRANTED");
     }
-
-    public void claimedBy(SystemAdmin admin, SystemPermission permission) {
-        return;
-    }
 }
