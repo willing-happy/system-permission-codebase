@@ -10,7 +10,7 @@ public class SystemPermission {
     public SystemPermission(SystemProfile profile) {
         this.profile = profile;
         this.permissionState = PermissionState.REQUESTED;
-        granted = false;
+        setGranted(false);
         notifyAdminOfPermissionRequest();
     }
 
@@ -27,22 +27,17 @@ public class SystemPermission {
     }
 
     public void deniedBy(SystemAdmin admin) {
-        if (!getState().equals(PermissionState.CLAIMED) && !getState().equals(PermissionState.UNIX_CLAIMED))
-            return;
-        if (!this.admin.equals(admin))
-            return;
-        granted = false;
-        setState(PermissionState.DENIED);
-        notifyUserOfPermissionRequestResult();    }
+        this.permissionState.deniedBy(admin, this);
+    }
 
-    private void notifyUserOfPermissionRequestResult() {
+    void notifyUserOfPermissionRequestResult() {
 
     }
 
     public void grantedBy(SystemAdmin admin) {
         if (!getState().equals(PermissionState.CLAIMED) && !getState().equals(PermissionState.UNIX_CLAIMED))
             return;
-        if (!this.admin.equals(admin))
+        if (!this.getAdmin().equals(admin))
             return;
 
         if (profile.isUnixPermissionRequired() && getState().equals(PermissionState.UNIX_CLAIMED))
@@ -53,7 +48,7 @@ public class SystemPermission {
             return;
         }
         setState(PermissionState.GRANTED);
-        granted = true;
+        setGranted(true);
         notifyUserOfPermissionRequestResult();
     }
 
@@ -75,5 +70,13 @@ public class SystemPermission {
 
     public void setState(PermissionState state) {
         this.permissionState = state;
+    }
+
+    public SystemAdmin getAdmin() {
+        return admin;
+    }
+
+    public void setGranted(boolean granted) {
+        this.granted = granted;
     }
 }
