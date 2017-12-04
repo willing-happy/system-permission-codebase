@@ -6,16 +6,10 @@ public class SystemPermission {
     private boolean granted;
     private boolean isUnixPermissionGranted;
     private String state;
-    public final static String REQUESTED = "REQUESTED";
-    public final static String CLAIMED = "CLAIMED";
-    public final static String GRANTED = "GRANTED";
-    public final static String DENIED = "DENIED";
-    public static final String UNIX_REQUESTED = "UNIX_REQUESTED";
-    public static final String UNIX_CLAIMED = "UNIX_CLAIMED";
 
     public SystemPermission(SystemProfile profile) {
         this.profile = profile;
-        state = REQUESTED;
+        state = PermissionState.REQUESTED.toString();
         granted = false;
         notifyAdminOfPermissionRequest();
     }
@@ -25,13 +19,13 @@ public class SystemPermission {
     }
 
     public void claimedBy(SystemAdmin admin) {
-        if (!state.equals(REQUESTED) && !state.equals(UNIX_REQUESTED))
+        if (!state.equals(PermissionState.REQUESTED.toString()) && !state.equals(PermissionState.UNIX_REQUESTED.toString()))
             return;
         willBeHandledBy(admin);
-        if (state.equals(REQUESTED))
-            state = CLAIMED;
-        else if (state.equals(UNIX_REQUESTED))
-            state = UNIX_CLAIMED;
+        if (state.equals(PermissionState.REQUESTED.toString()))
+            state = PermissionState.CLAIMED.toString();
+        else if (state.equals(PermissionState.UNIX_REQUESTED.toString()))
+            state = PermissionState.UNIX_CLAIMED.toString();
     }
 
     private void willBeHandledBy(SystemAdmin admin) {
@@ -39,12 +33,12 @@ public class SystemPermission {
     }
 
     public void deniedBy(SystemAdmin admin) {
-        if (!state.equals(CLAIMED) && !state.equals(UNIX_CLAIMED))
+        if (!state.equals(PermissionState.CLAIMED.toString()) && !state.equals(PermissionState.UNIX_CLAIMED.toString()))
             return;
         if (!this.admin.equals(admin))
             return;
         granted = false;
-        state = DENIED;
+        state = PermissionState.DENIED.toString();
         notifyUserOfPermissionRequestResult();    }
 
     private void notifyUserOfPermissionRequestResult() {
@@ -52,19 +46,19 @@ public class SystemPermission {
     }
 
     public void grantedBy(SystemAdmin admin) {
-        if (!state.equals(CLAIMED) && !state.equals(UNIX_CLAIMED))
+        if (!state.equals(PermissionState.CLAIMED.toString()) && !state.equals(PermissionState.UNIX_CLAIMED.toString()))
             return;
         if (!this.admin.equals(admin))
             return;
 
-        if (profile.isUnixPermissionRequired() && state.equals(UNIX_CLAIMED))
+        if (profile.isUnixPermissionRequired() && state.equals(PermissionState.UNIX_CLAIMED.toString()))
             isUnixPermissionGranted = true;
         else if (profile.isUnixPermissionRequired() && !profile.isUnixPermissionGranted()) {
-            state = UNIX_REQUESTED;
+            state = PermissionState.UNIX_REQUESTED.toString();
             notifyUnixAdminsOfPermissionRequest();
             return;
         }
-        state = GRANTED;
+        state = PermissionState.GRANTED.toString();
         granted = true;
         notifyUserOfPermissionRequestResult();
     }
