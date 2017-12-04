@@ -7,4 +7,8 @@ public class PermissionDenied extends PermissionState {
     public PermissionDenied() {
         super("DENIED");
     }
+
+    public void claimedBy(SystemAdmin admin, SystemPermission permission) {
+        return;
+    }
 }

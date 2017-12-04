@@ -1,5 +1,7 @@
 package state.sample.systempermission;
 
+import static sun.misc.VM.getState;
+
 /**
  * Created by willi on 2017/12/4.
  */
@@ -21,4 +23,6 @@ public abstract class PermissionState {
     public String toString() {
         return name;
     }
+
+    public abstract void claimedBy(SystemAdmin admin, SystemPermission permission);
 }

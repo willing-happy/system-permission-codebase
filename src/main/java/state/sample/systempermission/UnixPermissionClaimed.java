@@ -7,4 +7,8 @@ public class UnixPermissionClaimed extends PermissionState{
     public UnixPermissionClaimed() {
         super("UNIX_CLAIMED");
     }
+
+    public void claimedBy(SystemAdmin admin, SystemPermission permission) {
+        return;
+    }
 }

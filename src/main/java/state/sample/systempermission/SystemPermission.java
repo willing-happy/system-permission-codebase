@@ -19,16 +19,10 @@ public class SystemPermission {
     }
 
     public void claimedBy(SystemAdmin admin) {
-        if (!getState().equals(PermissionState.REQUESTED) && !getState().equals(PermissionState.UNIX_REQUESTED))
-            return;
-        willBeHandledBy(admin);
-        if (getState().equals(PermissionState.REQUESTED))
-            setState(PermissionState.CLAIMED);
-        else if (getState().equals(PermissionState.UNIX_REQUESTED))
-            setState(PermissionState.UNIX_CLAIMED);
+        this.permissionState.claimedBy(admin, this);
     }
 
-    private void willBeHandledBy(SystemAdmin admin) {
+    void willBeHandledBy(SystemAdmin admin) {
         this.admin = admin;
     }
 
