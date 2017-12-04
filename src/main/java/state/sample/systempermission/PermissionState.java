@@ -27,4 +27,6 @@ public abstract class PermissionState {
     public abstract void claimedBy(SystemAdmin admin, SystemPermission permission);
 
     public void deniedBy(SystemAdmin admin,SystemPermission permission) {}
+
+    public void grantedBy(SystemAdmin admin, SystemPermission permission) {}
 }

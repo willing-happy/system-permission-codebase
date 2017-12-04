@@ -35,24 +35,10 @@ public class SystemPermission {
     }
 
     public void grantedBy(SystemAdmin admin) {
-        if (!getState().equals(PermissionState.CLAIMED) && !getState().equals(PermissionState.UNIX_CLAIMED))
-            return;
-        if (!this.getAdmin().equals(admin))
-            return;
-
-        if (profile.isUnixPermissionRequired() && getState().equals(PermissionState.UNIX_CLAIMED))
-            isUnixPermissionGranted = true;
-        else if (profile.isUnixPermissionRequired() && !profile.isUnixPermissionGranted()) {
-            setState(PermissionState.UNIX_REQUESTED);
-            notifyUnixAdminsOfPermissionRequest();
-            return;
-        }
-        setState(PermissionState.GRANTED);
-        setGranted(true);
-        notifyUserOfPermissionRequestResult();
+        this.permissionState.grantedBy(admin, this);
     }
 
-    private void notifyUnixAdminsOfPermissionRequest() {
+    void notifyUnixAdminsOfPermissionRequest() {
 
     }
 
@@ -78,5 +64,13 @@ public class SystemPermission {
 
     public void setGranted(boolean granted) {
         this.granted = granted;
+    }
+
+    public SystemProfile getProfile() {
+        return profile;
+    }
+
+    public void setUnixPermissionGranted(boolean unixPermissionGranted) {
+        isUnixPermissionGranted = unixPermissionGranted;
     }
 }
